@@ -75,7 +75,7 @@ Also take note of the Assert.assertTrue(true) calls within each method. This is 
 	public class LoginSteps extends Steps {
 
 		@Given("a staff member is on the Login page")
-		public void automateSuccessfulLoginForRole() {
+		public void onTheLoginPage() {
 			Assert.assertTrue(true);
 		}
 
@@ -152,6 +152,6 @@ We are using a PropertyBasedConfiguration instance named SimplePropertyBasedConf
 
 ## Liscence
 
-The JBehave JUnit reporter is lisced under Apache 2.0.
+The JBehave JUnit reporter is licensed under Apache 2.0.
 
 <br/>
