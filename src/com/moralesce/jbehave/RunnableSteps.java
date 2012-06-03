@@ -26,7 +26,8 @@ public final class RunnableSteps {
 
 	public static Steps createSteps(Class<? extends JUnitScenario> testClass) {
 		verifyClassAnnotated(testClass, ReportOn.class);
-		return (Steps) newInstance(((ReportOn) testClass.getAnnotation(ReportOn.class)).value());
+		Class<? extends Steps> classToReportOn = testClass.getAnnotation(ReportOn.class).value();
+		return (Steps) newInstance(classToReportOn);
 	}
 
 	private static <T> T newInstance(Class<T> testClass) {

@@ -1,4 +1,4 @@
-package com.moralesce.jbehave.examples;
+package com.moralesce.jbehave;
 
 import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.errors.ErrorStrategy;
@@ -7,15 +7,15 @@ import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 
-public class StoryConfiguration extends PropertyBasedConfiguration {
+public class SimplePropertyBasedConfiguration extends PropertyBasedConfiguration {
 
 	private ScenarioReporter reporter;
 
-	public StoryConfiguration() {
+	public SimplePropertyBasedConfiguration() {
 
 	}
 
-	public StoryConfiguration(ScenarioReporter reporter) {
+	public SimplePropertyBasedConfiguration(ScenarioReporter reporter) {
 		this.reporter = reporter;
 	}
 

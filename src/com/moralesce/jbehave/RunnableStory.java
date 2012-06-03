@@ -15,8 +15,6 @@
  */
 package com.moralesce.jbehave;
 
-import java.lang.annotation.Annotation;
-
 import org.jbehave.scenario.Configuration;
 import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.definition.StoryDefinition;
@@ -26,8 +24,8 @@ import com.moralesce.jbehave.annotations.UseConfiguration;
 public final class RunnableStory {
 
 	public static StoryDefinition createStoryDefinition(Class<? extends JUnitScenario> testClass) {
-		verifyClassAnnotatedWithConfiguration(testClass);
-		return ((Configuration) newInstance(getAnnotatedConfigurationFor(testClass))).forDefiningScenarios().loadScenarioDefinitionsFor(testClass);
+		Class<? extends Configuration> configurationClass = getAnnotatedConfigurationFor(testClass);
+		return ((Configuration) newInstance(configurationClass != null ? configurationClass : SimplePropertyBasedConfiguration.class)).forDefiningScenarios().loadScenarioDefinitionsFor(testClass);
 	}
 
 	private static <T> T newInstance(Class<T> testClass) {
@@ -39,22 +37,12 @@ public final class RunnableStory {
 		}
 	}
 
-	private static void verifyClassAnnotatedWithConfiguration(Class<? extends JUnitScenario> testClass) {
-		Annotation annotation = testClass.getAnnotation(UseConfiguration.class);
-		if (annotation == null) {
-			annotation = testClass.getSuperclass().getAnnotation(UseConfiguration.class);
-		}
-		if (annotation == null) {
-			throw new IllegalArgumentException("Test class " + testClass.getSimpleName() + " must be annotated with @" + UseConfiguration.class.getSimpleName());
-		}
-	}
-
 	private static Class<? extends Configuration> getAnnotatedConfigurationFor(Class<? extends JUnitScenario> testClass) {
 		UseConfiguration useConfiguration = (UseConfiguration) testClass.getAnnotation(UseConfiguration.class);
 		if (useConfiguration == null) {
 			useConfiguration = (UseConfiguration) testClass.getSuperclass().getAnnotation(UseConfiguration.class);
 		}
-		return useConfiguration.value();
+		return useConfiguration == null ? null : useConfiguration.value();
 	}
 
 }

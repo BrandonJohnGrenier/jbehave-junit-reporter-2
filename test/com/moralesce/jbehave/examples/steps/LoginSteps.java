@@ -34,11 +34,9 @@ public class LoginSteps extends Steps {
 		Assert.assertTrue(true);
 	}
 
-
 	@Then("the staff member should be redirected to the Home page")
 	public void shouldBeRedirectedToTheHomePage() {
 		Assert.assertTrue(true);
 	}
 
-	
 }
