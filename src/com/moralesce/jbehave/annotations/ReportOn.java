@@ -1,4 +1,4 @@
-package com.moralesce.jbehave;
+package com.moralesce.jbehave.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

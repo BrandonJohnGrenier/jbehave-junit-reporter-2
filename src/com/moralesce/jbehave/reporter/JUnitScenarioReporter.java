@@ -1,82 +1,62 @@
 package com.moralesce.jbehave.reporter;
 
-import java.util.Iterator;
-
+import org.apache.commons.lang.StringUtils;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 
 public class JUnitScenarioReporter extends AbstractScenarioReporter implements ScenarioReporter {
+
 	private final RunNotifier notifier;
 	private final Description storyDescription;
 	private Description scenarioDescription = null;
 
-	public static JUnitScenarioReporter newReporter(RunNotifier paramRunNotifier, Description paramDescription) {
-		return new JUnitScenarioReporter(paramRunNotifier, paramDescription);
+	public static JUnitScenarioReporter newReporter(RunNotifier notifier, Description storyDescription) {
+		return new JUnitScenarioReporter(notifier, storyDescription);
 	}
 
-	JUnitScenarioReporter(RunNotifier paramRunNotifier, Description paramDescription) {
-		this.notifier = paramRunNotifier;
-		this.storyDescription = paramDescription;
+	JUnitScenarioReporter(RunNotifier notifier, Description storyDescription) {
+		this.notifier = notifier;
+		this.storyDescription = storyDescription;
 	}
 
-	public void beforeScenario(String paramString) {
-		Description localDescription = scenarioDescription(paramString);
-		if (localDescription != null) {
-			this.scenarioDescription = localDescription;
-			this.notifier.fireTestStarted(localDescription);
+	public void beforeScenario(String key) {
+		for (Description description : storyDescription.getChildren()) {
+			if (description.getDisplayName().contains(key)) {
+				this.scenarioDescription = description;
+			}
 		}
 	}
 
-	public void notPerformed(String paramString) {
-		Description localDescription = stepDescription(paramString);
-		if (localDescription != null) {
-			this.notifier.fireTestStarted(localDescription);
-			this.notifier.fireTestIgnored(localDescription);
+	public void pending(String key) {
+		Description description = findStepDescription(key);
+		if (description != null) {
+			this.notifier.fireTestIgnored(description);
 		}
 	}
 
-	public void pending(String paramString) {
-		Description localDescription = stepDescription(paramString);
-		if (localDescription != null) {
-			this.notifier.fireTestStarted(localDescription);
-			this.notifier.fireTestIgnored(localDescription);
+	public void successful(String key) {
+		Description description = findStepDescription(key);
+		if (description != null) {
+			this.notifier.fireTestStarted(description);
+			this.notifier.fireTestFinished(description);
 		}
 	}
 
-	public void successful(String paramString) {
-		Description localDescription = stepDescription(paramString);
-		if (localDescription != null) {
-			this.notifier.fireTestStarted(localDescription);
-			this.notifier.fireTestFinished(localDescription);
-		}
-	}
-
-	public void failed(String paramString, Throwable paramThrowable) {
-		Description localDescription = stepDescription(paramString);
+	public void failed(String key, Throwable t) {
+		Description localDescription = findStepDescription(key);
 		if (localDescription != null) {
 			this.notifier.fireTestStarted(localDescription);
-			this.notifier.fireTestFailure(new Failure(localDescription, paramThrowable));
+			this.notifier.fireTestFailure(new Failure(localDescription, t));
 		}
 	}
 
-	private Description stepDescription(String paramString) {
-		Iterator localIterator = this.scenarioDescription.getChildren().iterator();
-		while (localIterator.hasNext()) {
-			Description localDescription = (Description) localIterator.next();
-			if (getStepName(localDescription).equals(paramString))
-				return localDescription;
-		}
-		return null;
-	}
-
-	private Description scenarioDescription(String paramString) {
-		Iterator localIterator = this.storyDescription.getChildren().iterator();
-		while (localIterator.hasNext()) {
-			Description localDescription = (Description) localIterator.next();
-			if (localDescription.getDisplayName().contains(paramString))
-				return localDescription;
+	private Description findStepDescription(String key) {
+		for (Description description : scenarioDescription.getChildren()) {
+			if (getStepName(description).equals(key)) {
+				return description;
+			}
 		}
 		return null;
 	}
@@ -88,8 +68,7 @@ public class JUnitScenarioReporter extends AbstractScenarioReporter implements S
 	}
 
 	private String stripClassNameFromDisplayName(Description paramDescription) {
-		return "";
-		//return StringUtils.remove(paramDescription.getDisplayName(), "(" + paramDescription.getClassName() + ")");
+		return StringUtils.remove(paramDescription.getDisplayName(), "(" + paramDescription.getClassName() + ")");
 	}
 
 }

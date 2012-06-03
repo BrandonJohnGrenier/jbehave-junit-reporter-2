@@ -10,38 +10,42 @@ import org.jbehave.scenario.steps.Steps;
 import org.junit.runner.Description;
 
 public final class DescriptionGenerator {
-	public static Description newDescription(Class<? extends JUnitScenario> paramClass) {
-		return storyDescription(paramClass);
+
+	public static Description newDescription(Class<? extends JUnitScenario> testClass) {
+		return createStoryDescription(testClass);
 	}
 
-	private static Description storyDescription(Class<? extends JUnitScenario> paramClass) {
-		StoryDefinition localStoryDefinition = RunnableStoryDefinition.newStoryDefinition(paramClass);
-		Description localDescription = Description.createSuiteDescription(localStoryDefinition.getBlurb().asString(), new Annotation[0]);
+	private static Description createStoryDescription(Class<? extends JUnitScenario> testClass) {
+		StoryDefinition localStoryDefinition = RunnableStory.newStoryDefinition(testClass);
+		Description description = Description.createSuiteDescription(localStoryDefinition.getBlurb().asString(), new Annotation[0]);
+		
 		int i = 1;
 		Iterator localIterator = localStoryDefinition.getScenarios().iterator();
 		while (localIterator.hasNext()) {
 			ScenarioDefinition localScenarioDefinition = (ScenarioDefinition) localIterator.next();
-			localDescription.addChild(scenarioDescription(localScenarioDefinition, i, RunnableSteps.newSteps(paramClass)));
+			description.addChild(createScenarioDescription(localScenarioDefinition, i, RunnableSteps.newSteps(testClass)));
 			i++;
 		}
-		return localDescription;
+		
+		return description;
 	}
 
-	private static Description scenarioDescription(ScenarioDefinition paramScenarioDefinition, int paramInt, Steps paramSteps) {
-		Description localDescription = Description.createSuiteDescription("Scenario " + paramInt + ": " + paramScenarioDefinition.getTitle(), new Annotation[0]);
-		String str1 = "Story " + JUnitScenarioRunner.getStoryCounter() + ", Scenario " + paramInt + ", ";
+	private static Description createScenarioDescription(ScenarioDefinition scenario, Integer scenarioNumber, Steps steps) {
+		Description description = Description.createSuiteDescription("Scenario " + scenarioNumber + ": " + scenario.getTitle(), new Annotation[0]);
+		String str1 = "Story " + JUnitScenarioRunner.getStoryCounter() + ", Scenario " + scenarioNumber + ", ";
+		
 		int i = 1;
-		Iterator localIterator = paramScenarioDefinition.getSteps().iterator();
-		while (localIterator.hasNext()) {
-			String str2 = (String) localIterator.next();
-			localDescription.addChild(stepDescription(str1, str2, paramSteps, i));
+		for (String step : scenario.getSteps()) {
+			description.addChild(createStepDescription(str1, step, steps, i));
 			i++;
 		}
-		return localDescription;
+
+		return description;
 	}
 
-	private static Description stepDescription(String paramString1, String paramString2, Steps paramSteps, int paramInt) {
-		paramString1 = paramString1 + " Step " + paramInt + ": ";
-		return Description.createTestDescription(paramSteps.getClass(), paramString1 + paramString2);
+	private static Description createStepDescription(String paramString1, String paramString2, Steps steps, int stepNumber) {
+		paramString1 = paramString1 + " Step " + stepNumber + ": ";
+		return Description.createTestDescription(steps.getClass(), paramString1 + paramString2);
 	}
+
 }

@@ -1,6 +1,5 @@
 package com.moralesce.jbehave;
 
-
 import org.jbehave.scenario.JUnitScenario;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
@@ -10,6 +9,7 @@ import org.junit.runner.notification.RunNotifier;
 import com.moralesce.jbehave.reporter.JUnitScenarioReporter;
 
 public class JUnitScenarioRunner extends Runner {
+
 	private final Description description;
 	private final Class<? extends JUnitScenario> testClass;
 	private static int storyCounter = 1;
@@ -24,18 +24,19 @@ public class JUnitScenarioRunner extends Runner {
 		return this.description;
 	}
 
-	public void run(RunNotifier paramRunNotifier) {
+	public void run(RunNotifier runNotifier) {
 		try {
-			JUnitScenario localJUnitScenario = RunnableScenario.newScenario(this.testClass, JUnitScenarioReporter.newReporter(paramRunNotifier, this.description));
-			localJUnitScenario.runScenario();
+			JUnitScenario scenario = RunnableScenario.newScenario(this.testClass, JUnitScenarioReporter.newReporter(runNotifier, this.description));
+			scenario.runScenario();
 		}
-		catch (Throwable localThrowable) {
-			paramRunNotifier.fireTestStarted(this.description);
-			paramRunNotifier.fireTestFailure(new Failure(this.description, localThrowable));
+		catch (Throwable t) {
+			runNotifier.fireTestStarted(this.description);
+			runNotifier.fireTestFailure(new Failure(this.description, t));
 		}
 	}
 
 	public static int getStoryCounter() {
 		return storyCounter;
 	}
+
 }

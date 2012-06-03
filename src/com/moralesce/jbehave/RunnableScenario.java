@@ -5,12 +5,12 @@ import org.jbehave.scenario.reporters.ScenarioReporter;
 
 public final class RunnableScenario {
 	
-	public static JUnitScenario newScenario(Class<? extends JUnitScenario> paramClass, ScenarioReporter paramScenarioReporter) {
+	public static JUnitScenario newScenario(Class<? extends JUnitScenario> testClass, ScenarioReporter reporter) {
 		try {
-			return (JUnitScenario) paramClass.getConstructor(new Class[] { ScenarioReporter.class }).newInstance(new Object[] { paramScenarioReporter });
+			return (JUnitScenario) testClass.getConstructor(new Class[] { ScenarioReporter.class }).newInstance(new Object[] { reporter });
 		}
 		catch (Exception e) {
-			throw new IllegalArgumentException("Could not instantiate test class: " + paramClass.getSimpleName() + " : " + e.getMessage());
+			throw new IllegalArgumentException("Could not instantiate test class: " + testClass.getSimpleName() + " : " + e.getMessage());
 		}
 	}
 	
