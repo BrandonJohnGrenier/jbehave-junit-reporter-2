@@ -1,3 +1,18 @@
+/**
+ *  Copyright 2012 Brandon Grenier
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package com.moralesce.jbehave.reporter;
 
 import org.apache.commons.lang.StringUtils;
@@ -30,14 +45,14 @@ public class JUnitScenarioReporter extends AbstractScenarioReporter implements S
 	}
 
 	public void pending(String key) {
-		Description description = findStepDescription(key);
+		Description description = resolveStepDescription(key);
 		if (description != null) {
 			this.notifier.fireTestIgnored(description);
 		}
 	}
 
 	public void successful(String key) {
-		Description description = findStepDescription(key);
+		Description description = resolveStepDescription(key);
 		if (description != null) {
 			this.notifier.fireTestStarted(description);
 			this.notifier.fireTestFinished(description);
@@ -45,14 +60,14 @@ public class JUnitScenarioReporter extends AbstractScenarioReporter implements S
 	}
 
 	public void failed(String key, Throwable t) {
-		Description localDescription = findStepDescription(key);
+		Description localDescription = resolveStepDescription(key);
 		if (localDescription != null) {
 			this.notifier.fireTestStarted(localDescription);
 			this.notifier.fireTestFailure(new Failure(localDescription, t));
 		}
 	}
 
-	private Description findStepDescription(String key) {
+	private Description resolveStepDescription(String key) {
 		for (Description description : scenarioDescription.getChildren()) {
 			if (getStepName(description).equals(key)) {
 				return description;
@@ -61,14 +76,14 @@ public class JUnitScenarioReporter extends AbstractScenarioReporter implements S
 		return null;
 	}
 
-	private String getStepName(Description paramDescription) {
-		String str = stripClassNameFromDisplayName(paramDescription);
+	private String getStepName(Description stepDescription) {
+		String str = stripClassNameFromDisplayName(stepDescription);
 		int i = str.indexOf(":", 0);
 		return str.substring(i + 1, str.length()).trim();
 	}
 
-	private String stripClassNameFromDisplayName(Description paramDescription) {
-		return StringUtils.remove(paramDescription.getDisplayName(), "(" + paramDescription.getClassName() + ")");
+	private String stripClassNameFromDisplayName(Description stepDescription) {
+		return StringUtils.remove(stepDescription.getDisplayName(), "(" + stepDescription.getClassName() + ")");
 	}
 
 }
