@@ -24,5 +24,7 @@ import org.jbehave.scenario.Configuration;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ java.lang.annotation.ElementType.TYPE })
 public @interface UseConfiguration {
+
 	public abstract Class<? extends Configuration> value();
+
 }

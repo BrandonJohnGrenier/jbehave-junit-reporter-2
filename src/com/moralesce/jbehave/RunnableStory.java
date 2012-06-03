@@ -25,9 +25,9 @@ import com.moralesce.jbehave.annotations.UseConfiguration;
 
 public final class RunnableStory {
 
-	public static StoryDefinition createStoryDefinition(Class<? extends JUnitScenario> paramClass) {
-		verifyClassAnnotatedWithConfiguration(paramClass);
-		return ((Configuration) newInstance(getAnnotatedConfigurationFor(paramClass))).forDefiningScenarios().loadScenarioDefinitionsFor(paramClass);
+	public static StoryDefinition createStoryDefinition(Class<? extends JUnitScenario> testClass) {
+		verifyClassAnnotatedWithConfiguration(testClass);
+		return ((Configuration) newInstance(getAnnotatedConfigurationFor(testClass))).forDefiningScenarios().loadScenarioDefinitionsFor(testClass);
 	}
 
 	private static <T> T newInstance(Class<T> testClass) {

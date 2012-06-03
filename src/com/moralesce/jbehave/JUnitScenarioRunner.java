@@ -29,9 +29,9 @@ public class JUnitScenarioRunner extends Runner {
 	private final Class<? extends JUnitScenario> testClass;
 	private static int storyCounter = 1;
 
-	public JUnitScenarioRunner(Class<? extends JUnitScenario> paramClass) {
-		this.testClass = paramClass;
-		this.description = DescriptionGenerator.newDescription(paramClass);
+	public JUnitScenarioRunner(Class<? extends JUnitScenario> testClass) {
+		this.testClass = testClass;
+		this.description = DescriptionGenerator.newDescription(testClass);
 		storyCounter += 1;
 	}
 
@@ -39,14 +39,14 @@ public class JUnitScenarioRunner extends Runner {
 		return this.description;
 	}
 
-	public void run(RunNotifier runNotifier) {
+	public void run(RunNotifier notifier) {
 		try {
-			JUnitScenario scenario = RunnableScenario.newScenario(this.testClass, JUnitScenarioReporter.newReporter(runNotifier, this.description));
+			JUnitScenario scenario = RunnableScenario.createScenario(this.testClass, JUnitScenarioReporter.newReporter(notifier, this.description));
 			scenario.runScenario();
 		}
 		catch (Throwable t) {
-			runNotifier.fireTestStarted(this.description);
-			runNotifier.fireTestFailure(new Failure(this.description, t));
+			notifier.fireTestStarted(this.description);
+			notifier.fireTestFailure(new Failure(this.description, t));
 		}
 	}
 

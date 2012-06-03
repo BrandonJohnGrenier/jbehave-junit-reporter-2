@@ -20,7 +20,7 @@ import org.jbehave.scenario.reporters.ScenarioReporter;
 
 public final class RunnableScenario {
 	
-	public static JUnitScenario newScenario(Class<? extends JUnitScenario> testClass, ScenarioReporter reporter) {
+	public static JUnitScenario createScenario(Class<? extends JUnitScenario> testClass, ScenarioReporter reporter) {
 		try {
 			return (JUnitScenario) testClass.getConstructor(new Class[] { ScenarioReporter.class }).newInstance(new Object[] { reporter });
 		}

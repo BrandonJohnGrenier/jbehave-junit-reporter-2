@@ -44,6 +44,10 @@ public class JUnitScenarioReporter extends AbstractScenarioReporter implements S
 		}
 	}
 
+	public void afterScenario() {
+		this.scenarioDescription = null;
+	}
+
 	public void pending(String key) {
 		Description description = resolveStepDescription(key);
 		if (description != null) {
@@ -77,9 +81,9 @@ public class JUnitScenarioReporter extends AbstractScenarioReporter implements S
 	}
 
 	private String getStepName(Description stepDescription) {
-		String str = stripClassNameFromDisplayName(stepDescription);
-		int i = str.indexOf(":", 0);
-		return str.substring(i + 1, str.length()).trim();
+		String stepName = stripClassNameFromDisplayName(stepDescription);
+		int i = stepName.indexOf(" - ", 0);
+		return stepName.substring(i + 3, stepName.length()).trim();
 	}
 
 	private String stripClassNameFromDisplayName(Description stepDescription) {

@@ -33,10 +33,10 @@ public final class DescriptionGenerator {
 		StoryDefinition story = RunnableStory.createStoryDefinition(testClass);
 		Description storyDescription = Description.createSuiteDescription(story.getBlurb().asString().replace("Story: ", ""), new Annotation[0]);
 
-		int i = 1;
+		int scenarioNumber = 1;
 		for (ScenarioDefinition scenario : story.getScenarios()) {
-			storyDescription.addChild(createScenarioDescription(scenario, i, RunnableSteps.createSteps(testClass)));
-			i++;
+			storyDescription.addChild(createScenarioDescription(scenario, scenarioNumber, RunnableSteps.createSteps(testClass)));
+			scenarioNumber++;
 		}
 
 		return storyDescription;
@@ -44,20 +44,19 @@ public final class DescriptionGenerator {
 
 	private static Description createScenarioDescription(ScenarioDefinition scenario, Integer scenarioNumber, Steps steps) {
 		Description scenarioDescrption = Description.createSuiteDescription("Scenario " + scenarioNumber + ": " + scenario.getTitle(), new Annotation[0]);
-		String str1 = "Story " + JUnitScenarioRunner.getStoryCounter() + ", Scenario " + scenarioNumber + ", ";
 
-		int i = 1;
-		for (String step : scenario.getSteps()) {
-			scenarioDescrption.addChild(createStepDescription(str1, step, steps, i));
-			i++;
+		int stepNumber = 1;
+		for (String stepDescription : scenario.getSteps()) {
+			String context = JUnitScenarioRunner.getStoryCounter() + "" + scenarioNumber + "" + stepNumber + " - ";
+			scenarioDescrption.addChild(createStepDescription(context, stepDescription, steps.getClass()));
+			stepNumber++;
 		}
 
 		return scenarioDescrption;
 	}
 
-	private static Description createStepDescription(String paramString1, String paramString2, Steps steps, int stepNumber) {
-		paramString1 = paramString1 + " Step " + stepNumber + ": ";
-		return Description.createTestDescription(steps.getClass(), paramString1 + paramString2);
+	private static Description createStepDescription(String context, String description, Class<? extends Steps> stepClass) {
+		return Description.createTestDescription(stepClass, context + description);
 	}
 
 }

@@ -24,5 +24,7 @@ import org.jbehave.scenario.steps.Steps;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ java.lang.annotation.ElementType.TYPE })
 public @interface ReportOn {
+
 	public abstract Class<? extends Steps> value();
+
 }
