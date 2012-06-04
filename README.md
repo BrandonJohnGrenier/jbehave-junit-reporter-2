@@ -12,8 +12,8 @@ You can gain this capability by simply dropping the jbehave-junit-reporter JAR f
 
 ## What You Need
 
-#### JUnit 4.5 or Later
-The JBehave Junit reporter depends on JUnit 4.5 or later, and is not compatible with earlier versions of JUnit.
+#### JUnit 4.4 or Later
+The JBehave JUnit reporter depends on JUnit 4.4 or later, and is not compatible with earlier versions of JUnit.
 
 #### JBehave 2
 The JBehave JUnit reporter depends the 2.x series of JBehave (2.0.0 to 2.5.9), and is not compatible with JBehave 3.0.0 or above.

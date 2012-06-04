@@ -15,7 +15,6 @@
  */
 package com.moralesce.jbehave.reporter;
 
-import org.apache.commons.lang.StringUtils;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
@@ -87,7 +86,7 @@ public class JUnitScenarioReporter extends AbstractScenarioReporter implements S
 	}
 
 	private String stripClassNameFromDisplayName(Description stepDescription) {
-		return StringUtils.remove(stepDescription.getDisplayName(), "(" + stepDescription.getClassName() + ")");
+		return stepDescription.getDisplayName().split("\\(")[0];
 	}
 
 }
