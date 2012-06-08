@@ -1,6 +1,6 @@
-<project name="jbehave-junit-reporter" basedir=".">
-	<property name="version" value="1.0.1" />
-	<property name="name" value="jbehave-junit-reporter" />
+<project name="jbehave-junit-reporter-2" basedir=".">
+	<property name="version" value="1.2" />
+	<property name="name" value="jbehave-junit-reporter-2" />
 	<property name="bin.dir" value="binaries" />
 	<property name="src.dir" value="src" />
 	<property name="test.dir" value="test" />
@@ -34,16 +34,16 @@
 	</target>
 
 	<target name="jar" depends="compile">
-		<jar jarfile="${bin.dir}/${name}-${version}.jar" basedir="${bin.dir}" />
-		<jar jarfile="${bin.dir}/${name}-${version}-sources.jar" basedir="${src.dir}" />
+		<jar jarfile="${bin.dir}/${name}.${version}.jar" basedir="${bin.dir}" />
+		<jar jarfile="${bin.dir}/${name}.${version}-sources.jar" basedir="${src.dir}" />
 	</target>
 
 	<target name="dist" depends="jar">
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${dist.lib.dir}" />
 
-		<copy todir="${dist.dir}" file="${bin.dir}/${name}-${version}.jar" />
-		<copy todir="${dist.dir}" file="${bin.dir}/${name}-${version}-sources.jar" />
+		<copy todir="${dist.dir}" file="${bin.dir}/${name}.${version}.jar" />
+		<copy todir="${dist.dir}" file="${bin.dir}/${name}.${version}-sources.jar" />
 
 		<copy todir="${dist.dir}" file="LICENSE.txt" />
 		<copy todir="${dist.dir}" file="README.md" />
@@ -67,7 +67,7 @@
 			</fileset>
 		</copy>
 
-		<zip destfile="${name}-${version}.zip" basedir="${dist.dir}" />
+		<zip destfile="${name}.${version}.zip" basedir="${dist.dir}" />
 	</target>
 
 </project>
