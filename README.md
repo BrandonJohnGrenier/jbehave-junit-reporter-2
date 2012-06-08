@@ -1,6 +1,6 @@
 ## About
 
-The JBehave JUnit reporter is an addon to [JBehave](http://jbehave.org) 2 that provides fine-grained visualisation and reporting around the progress of your stories. Each JBehave step is tracked and reported on as an individual test case. 
+The JBehave JUnit Reporter is an addon to [JBehave](http://jbehave.org) 2 that provides fine-grained visualisation and reporting around the progress of your stories. Each JBehave step is tracked and reported on as an individual test case. 
 
 If you're running a story as a JUnit test through your favorite IDE, you'll be able to get output like this:
 
@@ -13,10 +13,10 @@ You can gain this capability by simply dropping the jbehave-junit-reporter JAR f
 ## What You Need
 
 #### JUnit 4.4 or Later
-The JBehave JUnit reporter depends on JUnit 4.4 or later, and is not compatible with earlier versions of JUnit.
+The JBehave JUnit Reporter depends on JUnit 4.4 or later, and is not compatible with earlier versions of JUnit.
 
 #### JBehave 2
-The JBehave JUnit reporter depends the 2.x series of JBehave (2.0.0 to 2.5.9), and is not compatible with JBehave 3.0.0 or above.
+The JBehave JUnit Reporter depends the 2.x series of JBehave (2.0.0 to 2.5.9), and is not compatible with JBehave 3.0.0 or above. Please visit [JBehave JUnit Reporter 3](https://github.com/BrandonJohnGrenier/jbehave-junit-reporter-3) homepage if you're looking for support for JBehave 3.0.0 or above.
 
 <br/>
 
@@ -35,7 +35,7 @@ The reporter will visually mark pending steps, and also provides a count of the 
 <br/>
 
 ## A Walkthrough
-To show you how to use the JBehave JUnit reporter, we'll go through a complete example
+To show you how to use the JBehave JUnit Reporter, we'll go through a complete example
 
 <br/>
 
@@ -152,6 +152,6 @@ We are using a PropertyBasedConfiguration instance named SimplePropertyBasedConf
 
 ## Liscence
 
-The JBehave JUnit reporter is licensed under Apache 2.0.
+The JBehave JUnit Reporter is licensed under Apache 2.0.
 
 <br/>

@@ -21,7 +21,7 @@ public class SimplePropertyBasedConfiguration extends PropertyBasedConfiguration
 
 	public ClasspathScenarioDefiner forDefiningScenarios() {
 		ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-		return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this), contextClassLoader);
+		return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(), contextClassLoader);
 	}
 
 	public ScenarioReporter forReportingScenarios() {

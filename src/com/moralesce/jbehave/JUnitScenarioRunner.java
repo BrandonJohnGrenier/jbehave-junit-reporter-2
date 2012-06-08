@@ -31,7 +31,7 @@ public class JUnitScenarioRunner extends Runner {
 
 	public JUnitScenarioRunner(Class<? extends JUnitScenario> testClass) {
 		this.testClass = testClass;
-		this.description = DescriptionGenerator.newDescription(testClass);
+		this.description = DescriptionGenerator.newDescription(this.testClass);
 		storyCounter += 1;
 	}
 

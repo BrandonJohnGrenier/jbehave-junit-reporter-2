@@ -23,8 +23,8 @@ import org.junit.runner.notification.RunNotifier;
 public class JUnitScenarioReporter extends AbstractScenarioReporter implements ScenarioReporter {
 
 	private final RunNotifier notifier;
-	private final Description storyDescription;
-	private Description scenarioDescription = null;
+	private final Description story;
+	private Description scenario = null;
 
 	public static JUnitScenarioReporter newReporter(RunNotifier notifier, Description storyDescription) {
 		return new JUnitScenarioReporter(notifier, storyDescription);
@@ -32,19 +32,19 @@ public class JUnitScenarioReporter extends AbstractScenarioReporter implements S
 
 	JUnitScenarioReporter(RunNotifier notifier, Description storyDescription) {
 		this.notifier = notifier;
-		this.storyDescription = storyDescription;
+		this.story = storyDescription;
 	}
 
 	public void beforeScenario(String key) {
-		for (Description description : storyDescription.getChildren()) {
+		for (Description description : story.getChildren()) {
 			if (description.getDisplayName().contains(key)) {
-				this.scenarioDescription = description;
+				this.scenario = description;
 			}
 		}
 	}
 
 	public void afterScenario() {
-		this.scenarioDescription = null;
+		this.scenario = null;
 	}
 
 	public void pending(String key) {
@@ -63,15 +63,15 @@ public class JUnitScenarioReporter extends AbstractScenarioReporter implements S
 	}
 
 	public void failed(String key, Throwable t) {
-		Description localDescription = resolveStepDescription(key);
-		if (localDescription != null) {
-			this.notifier.fireTestStarted(localDescription);
-			this.notifier.fireTestFailure(new Failure(localDescription, t));
+		Description description = resolveStepDescription(key);
+		if (description != null) {
+			this.notifier.fireTestStarted(description);
+			this.notifier.fireTestFailure(new Failure(description, t));
 		}
 	}
 
 	private Description resolveStepDescription(String key) {
-		for (Description description : scenarioDescription.getChildren()) {
+		for (Description description : scenario.getChildren()) {
 			if (getStepName(description).equals(key)) {
 				return description;
 			}
