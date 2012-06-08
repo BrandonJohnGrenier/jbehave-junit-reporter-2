@@ -37,7 +37,6 @@ The reporter will visually mark pending steps, and also provides a count of the 
 ## A Walkthrough
 To show you how to use the JBehave JUnit Reporter, we'll go through a complete example
 
-<br/>
 
 First, we'll create a plain text file named **staff_member_logs_in** with the following content:
 
