@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Jbehave-junit-reporter-2 by BrandonJohnGrenier</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Jbehave-junit-reporter-2</h1>
+        <p>A library for JBehave 2 that provides fine-grained reporting of stories, scenarios and steps in JUnit.</p>
+        <p class="view"><a href="https://github.com/BrandonJohnGrenier/jbehave-junit-reporter-2">View the Project on GitHub <small>BrandonJohnGrenier/jbehave-junit-reporter-2</small></a></p>
+        <ul>
+          <li><a href="https://github.com/BrandonJohnGrenier/jbehave-junit-reporter-2/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/BrandonJohnGrenier/jbehave-junit-reporter-2/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/BrandonJohnGrenier/jbehave-junit-reporter-2">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>About</h2>
+
+<p>The JBehave JUnit reporter is an addon to <a href="http://jbehave.org">JBehave</a> 2 that provides fine-grained visualisation and reporting around the progress of your stories. Each JBehave step is tracked and reported on as an individual test case. </p>
+
+<p>If you're running a story as a JUnit test through your favorite IDE, you'll be able to get output like this:</p>
+
+<p><img src="http://www.moralesce.com/wp-content/uploads/2012/06/jbehave-scenario-reporter.png"></p>
+
+<p>You can gain this capability by simply dropping the jbehave-junit-reporter JAR file in your classpath, and then telling the reporter what you'd like to report on using the @ReportOn annotation. Visit the <a href="https://github.com/BrandonJohnGrenier/jbehave-junit-reporter/downloads">downloads</a> page to grab a copy of the library.</p>
+
+<p><br></p>
+
+<h2>What You Need</h2>
+
+<h4>JUnit 4.4 or Later</h4>
+
+<p>The JBehave JUnit reporter depends on JUnit 4.4 or later, and is not compatible with earlier versions of JUnit.</p>
+
+<h4>JBehave 2</h4>
+
+<p>The JBehave JUnit reporter depends the 2.x series of JBehave (2.0.0 to 2.5.9), and is not compatible with JBehave 3.0.0 or above.</p>
+
+<p><br></p>
+
+<h2>How it Works</h2>
+
+<p>The reporter will visually mark failing steps, and also provides a count of the number of steps and stories that are failing.</p>
+
+<p><img src="http://www.moralesce.com/wp-content/uploads/2012/06/jbehave-failing-steps.png"></p>
+
+<p><br></p>
+
+<p>The reporter will visually mark pending steps, and also provides a count of the number of steps that are pending. These are reported as 'ignored' in JUnit.</p>
+
+<p><img src="http://www.moralesce.com/wp-content/uploads/2012/06/jbehave-pending-steps.png"></p>
+
+<p><br></p>
+
+<h2>A Walkthrough</h2>
+
+<p>To show you how to use the JBehave JUnit reporter, we'll go through a complete example</p>
+
+<p><br></p>
+
+<p>First, we'll create a plain text file named <strong>staff_member_logs_in</strong> with the following content:</p>
+
+<pre><code>Story: As a staff member, I want to login so that I can get my work done.
+
+
+Scenario: A staff member provides a valid username and password
+
+Given a staff member is on the Login page
+When the staff member enters a username Administrator and password Password
+And the staff member clicks on the Login button
+Then the staff member should be redirected to the Home page
+
+Scenario: A staff member provides an invalid username
+
+Given a staff member is on the Login page
+When the staff member enters a username Rubbish and password Password
+And the staff member clicks on the Login button
+Then the staff member should be redirected to the Login page
+And the staff member is presented with a login message: Invalid username or password, try again
+</code></pre>
+
+<p><br></p>
+
+<p>Next, we'll create a Java class named <strong>LoginSteps.java</strong> which will map our text descriptions to Java methods. Note the use of the @Given, <a href="https://github.com/When" class="user-mention">@When</a> and <a href="https://github.com/then" class="user-mention">@then</a> annotations, and how they map to the steps above. For readability purposes we've just mapped a few text descriptions.</p>
+
+<p>Also take note of the Assert.assertTrue(true) calls within each method. This is where your standard JUnit assert-y calls would typically go in actual tests.</p>
+
+<pre><code>import junit.framework.Assert;
+
+import org.jbehave.scenario.annotations.Given;
+import org.jbehave.scenario.annotations.Then;
+import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.steps.Steps;
+
+public class LoginSteps extends Steps {
+
+    @Given("a staff member is on the Login page")
+    public void onTheLoginPage() {
+        Assert.assertTrue(true);
+    }
+
+    @When("the staff member enters a username $username and password $password")
+    public void enterCredentials(String username, String password) {
+        Assert.assertTrue(true);
+    }
+
+    @Then("the staff member should be redirected to the Home page")
+    public void shouldBeRedirectedToTheHomePage() {
+        Assert.assertTrue(true);
+    }
+
+}
+</code></pre>
+
+<p><br></p>
+
+<p>To wrap things up, create a class named <strong>StaffMemberLogsIn.java</strong>, and place it in the same directory as our text file.</p>
+
+<pre><code>import org.jbehave.scenario.JUnitScenario;
+import org.jbehave.scenario.reporters.ScenarioReporter;
+import org.junit.runner.RunWith;
+
+import com.moralesce.jbehave.JUnitScenarioRunner;
+import com.moralesce.jbehave.DefaultStoryConfiguration;
+import com.moralesce.jbehave.annotations.ReportOn;
+import com.moralesce.jbehave.examples.steps.LoginSteps;
+
+@RunWith(JUnitScenarioRunner.class)
+@ReportOn(LoginSteps.class)
+public class StaffMemberLogsIn extends JUnitScenario {
+
+    public StaffMemberLogsIn(ScenarioReporter reporter) {
+        super(new SimplePropertyBasedConfiguration(reporter), new LoginSteps());
+    }
+
+}
+</code></pre>
+
+<p>That's it! You should be able to report on your first JBehave test. A few points to note here:</p>
+
+<ol>
+<li>We're configuring JUnit to @RunWith our JUnitScenarioRunner.</li>
+<li>As we've touched on before, we want to @ReportOn the steps we defined in our LoginSteps class.</li>
+<li>Our class extends JUnitScenario - every JBehave test must extend JUnitScenario.</li>
+<li>You should be able to run this test as a JUnit test, and get output similar to the screenshots presented above.</li>
+</ol><p><br></p>
+
+<p>We are using a PropertyBasedConfiguration instance named SimplePropertyBasedConfiguration instance. Custom JBehave configuration is a bit beyond our scope, however it is important to note that if you do want to use a different PropertyBasedConfiguration implementation you can. You'll just need to setup the @UseConfiguration annotation, shown in the example below: </p>
+
+<pre><code>import org.jbehave.scenario.JUnitScenario;
+import org.jbehave.scenario.reporters.ScenarioReporter;
+import org.junit.runner.RunWith;
+
+import com.moralesce.jbehave.JUnitScenarioRunner;
+import com.moralesce.jbehave.annotations.ReportOn;
+import com.moralesce.jbehave.annotations.UseConfiguration;
+import com.moralesce.jbehave.examples.steps.LoginSteps;
+
+@RunWith(JUnitScenarioRunner.class)
+@ReportOn(LoginSteps.class)
+@UseConfiguration(MyCustomPropertyConfiguration.class)
+public class StaffMemberLogsIn extends JUnitScenario {
+
+    public StaffMemberLogsIn(ScenarioReporter reporter) {
+        super(new MyCustomPropertyConfiguration(reporter), new LoginSteps());
+    }
+
+}
+</code></pre>
+
+<p><br></p>
+
+<h2>Liscence</h2>
+
+<p>The JBehave JUnit reporter is licensed under Apache 2.0.</p>
+
+<p><br></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/BrandonJohnGrenier">BrandonJohnGrenier</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
