@@ -6,7 +6,7 @@ If you're running a story as a JUnit test through your favorite IDE, you'll be a
 
 <img src="http://www.moralesce.com/wp-content/uploads/2012/06/jbehave-scenario-reporter.png"></img>
 
-You can gain this capability by simply dropping the jbehave-junit-reporter JAR file in your classpath, and then telling the reporter what you'd like to report on using the @ReportOn annotation. Visit the [downloads](https://github.com/BrandonJohnGrenier/jbehave-junit-reporter/downloads) page to grab a copy of the library.
+You can gain this capability by simply dropping the jbehave-junit-reporter JAR file in your classpath, and then telling the reporter what you'd like to report on using the @ReportOn annotation. Visit the [downloads](https://github.com/BrandonJohnGrenier/jbehave-junit-reporter-2/downloads) page to grab a copy of the library.
 
 <br/>
 
